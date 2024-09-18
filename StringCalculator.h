@@ -18,7 +18,20 @@ const char* get_custom_delimiter(const char* input, char* delimiter) {
     return input;  // Return the original input if no custom delimiter found
 }
 
-// Main add function, now simplified
+// Function to handle negative number checking
+int handle_negatives(const char* token, char* negatives) {
+    int num = atoi(token);
+    if (num < 0) {
+        // Append the negative number to the list of negatives
+        char temp[10];
+        sprintf(temp, "%d ", num);
+        strcat(negatives, temp);
+        return 1;  // Indicate that a negative number was found
+    }
+    return 0;  // No negative number found
+}
+
+// Main add function, simplified
 int add(const char* input) {
     int sum = 0;
     char* string = strdup(input);  // Duplicate the input string to modify it
@@ -28,32 +41,30 @@ int add(const char* input) {
     char* token;
     char negatives[100] = "";  // String to store negative numbers
     int found_negatives = 0;  // Flag to indicate if any negatives were found
+
     /* Tokenize the numbers using the custom or default delimiter */
     token = strtok(string, delimiter);
 
     /* Walk through the tokens */
     while (token != NULL) {
-        int num = atoi(token);  // Convert token to an integer
-            if (num < 0) {  // Check for negative numbers
+        if (handle_negatives(token, negatives)) {
             found_negatives = 1;
-            // Append the negative number to the list of negatives
-            char temp[10];
-            sprintf(temp, "%d ", num);
-            strcat(negatives, temp);
-        }
-        else if (num <= 1000) {  // Only add numbers <= 1000
-            sum += num;
+        } else {
+            int num = atoi(token);  // Convert token to an integer
+            if (num <= 1000) {  // Only add numbers <= 1000
+                sum += num;
+            }
         }
         token = strtok(NULL, delimiter);  // Get the next token
     }
 
     free(string);  // Free the duplicated string to avoid memory leaks
-        // If negatives were found, print an error message and list them
+
+    // If negatives were found, print an error message and list them
     if (found_negatives) {
         printf("Error: negatives not allowed: %s\n", negatives);
         return -1;  // Return an error code for negatives
     }
     return sum;
 }
-
 
