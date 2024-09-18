@@ -8,6 +8,13 @@ TEST(StringCalculatorAddTests, ExpectZeroForEmptyString) {
     ASSERT_EQ(result, expectedresult);
 }
 
+TEST(StringCalculatorAddTests, ExpectErrorForNegativeNumbers) {
+    const char* input = "1,-2,3";  // Input with a negative number
+    int expectedError = -1;        // The error code when negatives are present
+    int result = add(input);
+    ASSERT_EQ(result, expectedError);
+}
+
 TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
     int expectedresult = 0;
     const char* input = "Hello, world!";
