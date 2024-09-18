@@ -36,10 +36,10 @@ void process_negative_token(char* token, char* negatives) {
 }
 
 // Function to check for negative numbers and throw an exception
-void check_for_negatives(const char* input, const char* delimiter) {
+int check_for_negatives(const char* input, const char* delimiter, char* negatives) {
     char* string = strdup(input);
     char* token = strtok(string, delimiter);
-    char negatives[256] = "";
+    negatives[0] = '\0';
 
     while (token) {
         process_negative_token(token, negatives);
@@ -49,10 +49,11 @@ void check_for_negatives(const char* input, const char* delimiter) {
     free(string);
 
     if (strlen(negatives) > 0) {
-        negatives[strlen(negatives) - 1] = '\0';
+        negatives[strlen(negatives) - 1] = '\0';  // Remove trailing space
         printf("Negatives not allowed: %s\n", negatives);
-        exit(1);
+        return NEGATIVE_NUMBER_ERROR;
     }
+    return 0;  // No negatives
 }
 
 
@@ -77,7 +78,12 @@ int sum_numbers(const char* input, const char* delimiter) {
 // Main add function
 int add(const char* input) {
     char delimiter[10];
+    char negatives[256];
     const char* numbersStart = get_custom_delimiter(input, delimiter);
-    check_for_negatives(numbersStart, delimiter);
+
+    int errorCode = check_for_negatives(numbersStart, delimiter, negatives);
+    if (errorCode != 0) {
+        return errorCode;
+    }
     return sum_numbers(numbersStart, delimiter);
 }
