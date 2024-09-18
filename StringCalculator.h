@@ -5,66 +5,64 @@
 // Function to handle custom delimiter extraction
 const char* get_custom_delimiter(const char* input, char* delimiter) {
     if (strncmp(input, "//", 2) == 0) {
-        // Find the custom delimiter between "//" and "\n"
         const char* delimiterEnd = strstr(input, "\n");
         if (delimiterEnd != NULL) {
-            delimiter[0] = input[2];  // Extract the custom delimiter
-            delimiter[1] = '\0';  // Null-terminate the delimiter string
-            return delimiterEnd + 1;  // Return pointer to the start of the numbers
+            delimiter[0] = input[2];
+            delimiter[1] = '\0';
+            return delimiterEnd + 1;
         }
     }
-    // Use the default delimiter if no custom delimiter is provided
     strcpy(delimiter, ",\n");
-    return input;  // Return the original input if no custom delimiter found
+    return input;
 }
 
-// Function to handle negative number checking
-int handle_negatives(const char* token, char* negatives) {
-    int num = atoi(token);
-    if (num < 0) {
-        // Append the negative number to the list of negatives
-        char temp[10];
-        sprintf(temp, "%d ", num);
-        strcat(negatives, temp);
-        return 1;  // Indicate that a negative number was found
-    }
-    return 0;  // No negative number found
-}
+// Function to check for negative numbers and throw an exception
+void check_for_negatives(const char* input, const char* delimiter) {
+    char* string = strdup(input);
+    char* token = strtok(string, delimiter);
+    char negatives[256] = "";
 
-// Main add function, simplified
-int add(const char* input) {
-    int sum = 0;
-    char* string = strdup(input);  // Duplicate the input string to modify it
-    char delimiter[10];  // Buffer for the delimiter
-    const char* numbersStart = get_custom_delimiter(input, delimiter);  // Handle custom delimiter
-
-    char* token;
-    char negatives[100] = "";  // String to store negative numbers
-    int found_negatives = 0;  // Flag to indicate if any negatives were found
-
-    /* Tokenize the numbers using the custom or default delimiter */
-    token = strtok(string, delimiter);
-
-    /* Walk through the tokens */
-    while (token != NULL) {
-        if (handle_negatives(token, negatives)) {
-            found_negatives = 1;
-        } else {
-            int num = atoi(token);  // Convert token to an integer
-            if (num <= 1000) {  // Only add numbers <= 1000
-                sum += num;
-            }
+    while (token) {
+        int num = atoi(token);
+        if (num < 0) {
+            char negative[12];
+            sprintf(negative, "%d ", num);
+            strcat(negatives, negative);
         }
-        token = strtok(NULL, delimiter);  // Get the next token
+        token = strtok(NULL, delimiter);
     }
 
-    free(string);  // Free the duplicated string to avoid memory leaks
+    free(string);
 
-    // If negatives were found, print an error message and list them
-    if (found_negatives) {
-        printf("Error: negatives not allowed: %s\n", negatives);
-        return -1;  // Return an error code for negatives
+    if (strlen(negatives) > 0) {
+        negatives[strlen(negatives) - 1] = '\0';
+        printf("Negatives not allowed: %s\n", negatives);
+        exit(1);
     }
+}
+
+// Function to tokenize and sum numbers
+int sum_numbers(const char* input, const char* delimiter) {
+    int sum = 0;
+    char* string = strdup(input);
+    char* token = strtok(string, delimiter);
+
+    while (token) {
+        int num = atoi(token);
+        if (num <= 1000) {
+            sum += num;
+        }
+        token = strtok(NULL, delimiter);
+    }
+
+    free(string);
     return sum;
 }
 
+// Main add function
+int add(const char* input) {
+    char delimiter[10];
+    const char* numbersStart = get_custom_delimiter(input, delimiter);
+    check_for_negatives(numbersStart, delimiter);
+    return sum_numbers(numbersStart, delimiter);
+}
