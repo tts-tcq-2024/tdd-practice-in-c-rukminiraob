@@ -6,7 +6,7 @@ int add(const char*  input)
 {
   int sum = 0;
   char*  string = strdup(input);
-  const char delimiter[2] = ",\n";
+  static char delimiter[] = ",\n";
   char* token;
   /* get the first token */
    token = strtok(string, delimiter);
