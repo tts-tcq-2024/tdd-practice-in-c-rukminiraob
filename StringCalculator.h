@@ -26,19 +26,33 @@ int add(const char* input) {
     const char* numbersStart = get_custom_delimiter(input, delimiter);  // Handle custom delimiter
 
     char* token;
+    char negatives[100] = "";  // String to store negative numbers
+    int found_negatives = 0;  // Flag to indicate if any negatives were found
     /* Tokenize the numbers using the custom or default delimiter */
     token = strtok(string, delimiter);
 
     /* Walk through the tokens */
     while (token != NULL) {
         int num = atoi(token);  // Convert token to an integer
-        if (num <= 1000) {  // Only add numbers <= 1000
+            if (num < 0) {  // Check for negative numbers
+            found_negatives = 1;
+            // Append the negative number to the list of negatives
+            char temp[10];
+            sprintf(temp, "%d ", num);
+            strcat(negatives, temp);
+        }
+        else if (num <= 1000) {  // Only add numbers <= 1000
             sum += num;
         }
         token = strtok(NULL, delimiter);  // Get the next token
     }
 
     free(string);  // Free the duplicated string to avoid memory leaks
+        // If negatives were found, print an error message and list them
+    if (found_negatives) {
+        printf("Error: negatives not allowed: %s\n", negatives);
+        return -1;  // Return an error code for negatives
+    }
     return sum;
 }
 
