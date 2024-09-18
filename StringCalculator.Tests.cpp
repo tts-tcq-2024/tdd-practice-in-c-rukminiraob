@@ -7,13 +7,18 @@ TEST(StringCalculatorAddTests, ExpectZeroForEmptyString) {
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
-
 TEST(StringCalculatorAddTests, ExpectErrorForNegativeNumbers) {
     const char* input = "1,-2,3";  // Input with a negative number
-    int expectedError = -1;        // The error code when negatives are present
+    int expectedError = NEGATIVE_NUMBER_ERROR;  // The error code when negatives are present
     int result = add(input);
     ASSERT_EQ(result, expectedError);
 }
+// TEST(StringCalculatorAddTests, ExpectErrorForNegativeNumbers) {
+//     const char* input = "1,-2,3";  // Input with a negative number
+//     int expectedError = -1;        // The error code when negatives are present
+//     int result = add(input);
+//     ASSERT_EQ(result, expectedError);
+// }
 
 TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
     int expectedresult = 0;
