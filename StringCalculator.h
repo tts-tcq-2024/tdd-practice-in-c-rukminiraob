@@ -13,10 +13,13 @@ int add(const char*  input)
   /* walk through other tokens */
    while( token != NULL ) 
    {
-      printf( " %s\n", token );
-      sum += atoi(token);
-      token = strtok(NULL, delimiter);
+      int num = atoi(token);  // Convert token to an integer
+      if (num <= 1000)
+      {
+      sum += num;
+      }
+      token = strtok(NULL, delimiter); // Get the next token
+      
    }
-  
   return sum;
 }
