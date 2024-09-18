@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define NEGATIVE_NUMBER_ERROR -1
+
 // Function to handle custom delimiter extraction
 const char* get_custom_delimiter(const char* input, char* delimiter) {
     if (strncmp(input, "//", 2) == 0) {
