@@ -1,6 +1,13 @@
 #include <gtest/gtest.h>
 #include "StringCalculator.h"
 
+TEST(StringCalculatorAddTests, ExpectZeroForEmptyString) {
+    int expectedresult = 0;
+    const char* input = "";
+    int result = add(input);
+    ASSERT_EQ(result, expectedresult);
+}
+
 TEST(StringCalculatorAddTests, ExpectZeroForEmptyInput) {
     int expectedresult = 0;
     const char* input = "Hello, world!";
