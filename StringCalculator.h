@@ -16,6 +16,25 @@ const char* get_custom_delimiter(const char* input, char* delimiter) {
     return input;
 }
 
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to append a negative number to the negatives buffer
+void append_negative(char* negatives, int num) {
+    char negative[12];
+    sprintf(negative, "%d ", num);
+    strcat(negatives, negative);
+}
+
+// Function to check if a number is negative and process it
+void process_negative_token(char* token, char* negatives) {
+    int num = atoi(token);
+    if (num < 0) {
+        append_negative(negatives, num);
+    }
+}
+
 // Function to check for negative numbers and throw an exception
 void check_for_negatives(const char* input, const char* delimiter) {
     char* string = strdup(input);
@@ -23,12 +42,7 @@ void check_for_negatives(const char* input, const char* delimiter) {
     char negatives[256] = "";
 
     while (token) {
-        int num = atoi(token);
-        if (num < 0) {
-            char negative[12];
-            sprintf(negative, "%d ", num);
-            strcat(negatives, negative);
-        }
+        process_negative_token(token, negatives);
         token = strtok(NULL, delimiter);
     }
 
@@ -40,6 +54,7 @@ void check_for_negatives(const char* input, const char* delimiter) {
         exit(1);
     }
 }
+
 
 // Function to tokenize and sum numbers
 int sum_numbers(const char* input, const char* delimiter) {
