@@ -6,7 +6,7 @@ int add(const char*  input)
 {
   int sum = 0;
   char*  string = strdup(input);
-  static delimiter[10] = ",\n";  // Default delimiters: comma and newline
+  char delimiter[10] = ",\n";  // Default delimiters: comma and newline
   char* numbersStart = string;  // Pointer to where the numbers start
   char* token;
   
