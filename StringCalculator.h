@@ -4,8 +4,9 @@
 
 int add(const char*  input)
 {
+  int sum = 0;
   char*  string = strdup(input);
-  const char delimiter[2] = ",";
+  const char delimiter[2] = ",\n";
   char* token;
   /* get the first token */
    token = strtok(string, delimiter);
@@ -13,14 +14,9 @@ int add(const char*  input)
    while( token != NULL ) 
    {
       printf( " %s\n", token );
-      int num1 = atoi(token);
+      sum += atoi(token);
       token = strtok(NULL, delimiter);
-      if (token != NULL )
-      {
-        int num2 = atoi(token);
-        return (num1 + num2);
-      }
    }
   
-  return 0;
+  return sum;
 }
