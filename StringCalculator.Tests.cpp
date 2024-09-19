@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
 #include "StringCalculator.h"
+#include <gtest/gtest.h>
 
 TEST(StringCalculatorAddTests, ExpectZeroForEmptyString) {
     int expectedresult = 0;
@@ -9,8 +9,8 @@ TEST(StringCalculatorAddTests, ExpectZeroForEmptyString) {
 }
 
 TEST(StringCalculatorAddTests, ExpectErrorForNegativeNumbers) {
-    const char* input = "1,-2,3";  // Input with a negative number
-    int expectedError = NEGATIVE_NUMBER_ERROR;  // The error code when negatives are present
+    const char* input = "1,-2,3";              // Input with a negative number
+    int expectedError = NEGATIVE_NUMBER_ERROR; // The error code when negatives are present
     int result = add(input);
     ASSERT_EQ(result, expectedError);
 }
@@ -31,28 +31,28 @@ TEST(StringCalculatorAddTests, ExpectZeroForSingleZero) {
 
 TEST(StringCalculatorAddTests, ExpectSumForTwoNumbers) {
     int expectedresult = 3;
-    const char*  input = "1,2";
+    const char* input = "1,2";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
 TEST(StringCalculatorAddTests, ExpectSumWithNewlineDelimiter) {
     int expectedresult = 6;
-    const char*  input = "1\n2,3";
-    int result =add(input);
+    const char* input = "1\n2,3";
+    int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
 TEST(StringCalculatorAddTests, IgnoreNumbersGreaterThan1000) {
     int expectedresult = 1;
-    const char*  input = "1,1001";
-    int result =add(input);
+    const char* input = "1,1001";
+    int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
 
 TEST(StringCalculatorAddTests, ExpectSumWithCustomDelimiter) {
     int expectedresult = 3;
-    const char*  input = "//;\n1;2";
+    const char* input = "//(\n1(2";
     int result = add(input);
     ASSERT_EQ(result, expectedresult);
 }
