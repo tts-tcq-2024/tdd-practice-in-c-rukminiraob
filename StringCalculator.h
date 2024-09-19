@@ -1,6 +1,6 @@
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NEGATIVE_NUMBER_ERROR -1
 
@@ -14,15 +14,15 @@ const char* get_custom_delimiter(const char* input, char* delimiter) {
             return delimiterEnd + 1;
         }
     }
-    strcpy(delimiter, ",\n");
+    strcpy(delimiter, ",\n"); // default delimiter, if custom not found
     return input;
 }
 
 // Function to append a negative number to the negatives buffer
 void append_negative(char* negatives, int num) {
-    char negative[12];
-    sprintf(negative, "%d ", num);
-    strcat(negatives, negative);
+    char numToString[12];
+    sprintf(numToString, "%d ", num);
+    strcat(negatives, numToString);
 }
 
 // Function to check if a number is negative and process it
@@ -47,13 +47,12 @@ int check_for_negatives(const char* input, const char* delimiter, char* negative
     free(string);
 
     if (strlen(negatives) > 0) {
-        negatives[strlen(negatives) - 1] = '\0';  // Remove trailing space
+        negatives[strlen(negatives) - 1] = '\0'; // Remove trailing space
         printf("Negatives not allowed: %s\n", negatives);
         return NEGATIVE_NUMBER_ERROR;
     }
-    return 0;  // No negatives
+    return 0; // No negatives
 }
-
 
 // Function to tokenize and sum numbers
 int sum_numbers(const char* input, const char* delimiter) {
@@ -85,3 +84,4 @@ int add(const char* input) {
     }
     return sum_numbers(numbersStart, delimiter);
 }
+
