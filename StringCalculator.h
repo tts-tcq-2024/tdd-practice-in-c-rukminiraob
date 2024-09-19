@@ -18,10 +18,6 @@ const char* get_custom_delimiter(const char* input, char* delimiter) {
     return input;
 }
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 // Function to append a negative number to the negatives buffer
 void append_negative(char* negatives, int num) {
     char negative[12];
